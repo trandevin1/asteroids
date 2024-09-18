@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from player import Player
@@ -12,6 +13,9 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
+    pygame.display.set_caption("Asteroids!")
+    score_font = pygame.font.SysFont("monospace", 24, True)
+
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
@@ -25,6 +29,8 @@ def main():
     player = Player((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
     field = AsteroidField()
 
+    score = 0
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -36,11 +42,13 @@ def main():
         for asteroid in asteroids:
             if asteroid.collision(player):
                 print("Game Over!")
-                return
+                print(f"Final Score {score} points")
+                sys.exit()
             for shot in shots:
                 if shot.collision(asteroid):
                     asteroid.split()
                     shot.kill()
+                    score += 10
 
         # background
         screen.fill((0, 0, 0))
@@ -48,6 +56,9 @@ def main():
         # then render after updates
         for object in drawable:
             object.draw(screen)
+
+        scoretext = score_font.render(f"Score: {score}", 1, WHITE_FONT)
+        screen.blit(scoretext, (0, 0))
 
         # refresh screen
         pygame.display.flip()
