@@ -15,6 +15,7 @@ def main():
 
     pygame.display.set_caption("Asteroids!")
     score_font = pygame.font.SysFont("monospace", 24, True)
+    life_font = pygame.font.SysFont("monospace", 24, True)
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -32,6 +33,7 @@ def main():
     score = 0
 
     while True:
+        player.invincibility -= dt
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -41,9 +43,13 @@ def main():
 
         for asteroid in asteroids:
             if asteroid.collision(player):
-                print("Game Over!")
-                print(f"Final Score {score} points")
-                sys.exit()
+                if player.health < 1:
+                    print("Game Over!")
+                    print(f"Final Score {score} points")
+                    sys.exit()
+                if player.invincibility <= 0:
+                    player.decrease_health()
+                    player.invincibility = PLAYER_INVINCIBILITY
             for shot in shots:
                 if shot.collision(asteroid):
                     asteroid.split()
@@ -59,6 +65,9 @@ def main():
 
         scoretext = score_font.render(f"Score: {score}", 1, WHITE_FONT)
         screen.blit(scoretext, (0, 0))
+
+        lifetext = life_font.render(f"Life: {player.health}", 1, WHITE_FONT)
+        screen.blit(lifetext, (SCREEN_WIDTH - 100, 0))
 
         # refresh screen
         pygame.display.flip()
