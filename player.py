@@ -2,6 +2,7 @@ from circleshape import CircleShape
 from constants import *
 from shot import Shot
 import pygame
+import sys
 
 
 class Player(CircleShape):
@@ -11,6 +12,7 @@ class Player(CircleShape):
         self.cooldown = 0
         self.invincibility = 0
         self.health = 3
+        self.is_alive = True
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
