@@ -20,11 +20,12 @@ class Asteroid(CircleShape):
         if self.radius <= ASTEROID_MIN_RADIUS:
             return
         else:
-            random_angle = uniform(20.0, 50.0)
-            vect_1 = self.velocity.rotate(random_angle)
-            vect_2 = self.velocity.rotate(-random_angle)
+            random_angle_1 = uniform(20.0, 50.0)
+            vect_1 = self.velocity.rotate(random_angle_1)
+            vect_2 = self.velocity.rotate(-random_angle_1)
             new_radius = self.radius - ASTEROID_MIN_RADIUS
             asteroid1 = Asteroid(self.position.x, self.position.y, new_radius)
             asteroid2 = Asteroid(self.position.x, self.position.y, new_radius)
             asteroid1.velocity = vect_1 * 1.2
             asteroid2.velocity = vect_2 * 1.2
+
